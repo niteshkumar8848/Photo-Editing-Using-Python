@@ -1,6 +1,5 @@
 # Virtual Environment
 env/
-venv/
 
 # Python cache
 __pycache__/
@@ -10,6 +9,3 @@ __pycache__/
 # models/
 # *.pth
 # *.pt
-
-# # Edited images
-# 2.EditedImage/

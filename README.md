@@ -1,11 +1,12 @@
 # 🖼️ CLI Photo Editing Tool
 
-A powerful command-line image editor built with Python using the Pillow library. Perform various image manipulation operations directly from your terminal, including AI-powered background removal!
+A powerful command-line image editor built with Python using the Pillow library. Perform various image manipulation operations directly from your terminal, including AI-powered background removal using the U2Net deep learning model!
 
-![Python](https://img.shields.io/badge/python-3.x-blue.svg)
-![Pillow](https://img.shields.io/badge/Pillow-latest-green.svg)
+![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
+![Pillow](https://img.shields.io/badge/Pillow-10.0.0+-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
-![AI Background Removal](https://img.shields.io/badge/AI-Background%20Removal-purple.svg)
+![AI Background Removal](https://img.shields.io/badge/AI-U2Net%20Model-purple.svg)
+![Platform](https://img.shields.io/badge/Platform-Windows%2FmacOS%2FLinux-lightgrey.svg)
 
 ---
 
@@ -35,32 +36,36 @@ A powerful command-line image editor built with Python using the Pillow library.
 
 ## ✨ Features
 
-### � Basic Operations
-- 📷 **View Image** - Display images in your terminal with graphical preview
-- ✂️ **Crop Image** - Crop images by specifying coordinates and dimensions
-- 🔄 **Rotate Image** - Rotate images by any degree angle
-- 🔍 **Upscale Image** - Increase image resolution by a scale factor
-- 📉 **Downscale Image** - Decrease image resolution by a scale factor
+### 📷 Basic Operations
+- **View Image** - Display images in a graphical window with matplotlib preview
+- **Crop Image** - Crop images by specifying coordinates and dimensions
+- **Rotate Image** - Rotate images by any degree angle with white fill
+- **Upscale Image** - Increase image resolution by a scale factor (LANCZOS resampling)
+- **Downscale Image** - Decrease image resolution by a scale factor
 
 ### 🎨 Filters
-- 🌫️ **Gaussian Blur** - Apply Gaussian blur effect
-- 🔪 **Sharpen** - Sharpen the image
-- 🎨 **Detail** - Enhance detail in the image
-- 📐 **Edge Enhance** - Enhance edges in the image
-- 🌊 **Smooth** - Smooth the image
-- ⬛ **Grayscale** - Convert to grayscale/black & white
+- **Gaussian Blur** - Apply smooth Gaussian blur effect (radius=5)
+- **Sharpen** - Enhance image sharpness
+- **Detail** - Enhance fine details in the image
+- **Edge Enhance** - Emphasize and enhance image edges
+- **Smooth** - Apply smoothening filter
+- **Grayscale** - Convert to grayscale/black & white
 
 ### ☀️ Adjustments
-- ☀️ **Brightness** - Adjust image brightness
-- 🌓 **Contrast** - Adjust image contrast
-- 🎭 **Saturation** - Adjust color saturation
+- **Brightness** - Adjust image brightness (factor: >1.0 = brighter, <1.0 = darker)
+- **Contrast** - Adjust image contrast (factor: >1.0 = more, <1.0 = less)
+- **Saturation** - Adjust color saturation (factor: >1.0 = more, <1.0 = less)
 
 ### 📊 Histogram Analysis
-- 📊 **View Histogram** - Display RGB and grayscale histograms
-- 📈 **Adjust Histogram** - Equalize or stretch histogram for better image quality
+- **View Histogram** - Display RGB and grayscale histograms
+- **Equalize** - Apply histogram equalization for better distribution
+- **Stretch** - Apply linear contrast stretching per channel
 
-### 🤖 AI Features
-- 🧠 **Background Removal** - Remove background from images using AI (U2Net model)
+### 🤖 AI Background Removal
+- **Background Removal** - Remove background from images using AI
+- Uses **U2Net** (Universal U-Net) deep learning model
+- Model URL: `https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2net.onnx`
+- Automatically downloads model on first use (~170MB)
 
 ---
 
@@ -126,7 +131,7 @@ source venv/bin/activate
 deactivate
 ```
 
-> **💡 Pro Tip:** Always activate the virtual environment before installing dependencies or running the program!
+> 💡 **Pro Tip:** Always activate the virtual environment before installing dependencies or running the program!
 
 ### Installing Dependencies
 
@@ -144,11 +149,11 @@ pip install -r requirements.txt
 
 | Package | Purpose |
 |---------|---------|
-| Pillow | Core image processing library |
-| rembg | AI-powered background removal |
-| numpy | Numerical computing for histograms |
-| matplotlib | Image preview and histogram visualization |
-| onnxruntime | AI model inference (CPU) |
+| Pillow>=10.0.0 | Core image processing library |
+| rembg>=2.0.0 | AI-powered background removal |
+| numpy>=1.24.0 | Numerical computing for histograms |
+| matplotlib>=3.7.0 | Image preview and histogram visualization |
+| requests>=2.28.0 | HTTP requests for model download |
 
 ---
 
@@ -199,6 +204,7 @@ Photo-Editing-Using-Python/
 ├── imageManipulation.py      # Main application script
 ├── requirements.txt          # Python dependencies
 ├── README.md                 # This file
+├── .gitignore                # Git ignore rules
 ├── venv/                     # Virtual environment (created by you)
 │
 ├── 1.ImageToTest/          # Input images directory
@@ -220,8 +226,8 @@ Photo-Editing-Using-Python/
 │   ├── Smooth_images/       # Smoothed images
 │   └── Upscaled_images/     # Upscaled images
 │
-└── models/                  # AI models directory
-    └── u2net.onnx           # Pre-trained background removal model
+└── models/                  # AI models directory (auto-created)
+    └── u2net.onnx           # Pre-trained U2Net background removal model
 ```
 
 ---
@@ -283,7 +289,7 @@ python imageManipulation.py
 
 | Sub-option | Filter | Description |
 |------------|--------|-------------|
-| 6 → 1 | Gaussian Blur | Apply smooth blur effect |
+| 6 → 1 | Gaussian Blur | Apply smooth blur effect (radius=5) |
 | 6 → 2 | Sharpen | Enhance image sharpness |
 | 6 → 3 | Detail | Enhance fine details |
 | 6 → 4 | Edge Enhance | Emphasize image edges |
@@ -312,7 +318,11 @@ python imageManipulation.py
 |--------|-----------|-------------|
 | 9 | Remove Background | Uses AI (U2Net) to remove background from images |
 
-> **⚠️ Note:** The first time you use background removal, the AI model will be downloaded automatically (~170MB).
+> ⚠️ **Note:** The first time you use background removal, the AI model will be downloaded automatically (~170MB).
+>
+> **Model URL:** `https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2net.onnx`
+>
+> The model is automatically saved to the `models/` directory.
 
 ---
 
@@ -328,7 +338,7 @@ All processed images are automatically saved with timestamps:
 ├── Cropped_images/cropped_20260213_161030.jpg
 ├── Detailed_images/detailed_20260213_161035.jpg
 ├── Downscaled_images/downscaled_20260213_161025.jpg
-├── Edge_Enhanced_images/edgeEnhanced_20260213_161040.jpg
+├── Edge_Enhanced_images/edgeEnchanced_20260213_161040.jpg
 ├── Grayscaled_images/grayscaled_20260213_161040.jpg
 ├── Gussian_blur_images/gussianBlured_20260213_161040.jpg
 ├── Rotated_images/rotated_20260213_161020.jpg
@@ -337,6 +347,11 @@ All processed images are automatically saved with timestamps:
 ├── Smooth_images/smooth_20260213_161040.jpg
 └── Upscaled_images/upscaled_20260213_161015.jpg
 ```
+
+### Filename Format
+- Pattern: `{operation}_{YYYYMMDD}_{HHMMSS}.{extension}`
+- Background removal outputs: PNG (to preserve transparency)
+- All other operations: JPG
 
 ---
 
@@ -371,6 +386,11 @@ pip install matplotlib
 
 **Solution:** This is normal! The AI model (~170MB) is downloaded on first use. Subsequent runs will be faster.
 
+The model is downloaded from:
+```
+https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2net.onnx
+```
+
 #### 4. "No module named 'rembg'" error
 
 **Solution:** Install rembg:
@@ -383,11 +403,19 @@ pip install rembg
 
 **Solution:** Make sure your image is in the `1.ImageToTest/` directory. The program only searches in that folder.
 
+#### 6. Virtual environment activation issues (Windows)
+
+**Solution:** Run PowerShell as Administrator and enable scripts:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
 ### Getting Help
 
 If you encounter any other issues:
 
-1. Check the [Issues](https://github.com/niteshkumar-lodh/Photo-Editing-Using-Python/issues) page
+1. Check the [Issues](https://github.com/niteshkumar8848/Photo-Editing-Using-Python/issues) page
 2. Create a new issue with:
    - Error message
    - Your operating system
@@ -406,7 +434,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
    ```
 3. **Create** your feature branch:
    ```bash
-   git checkout -b feature/AmazingFeature
+   git checkout -b blackboxai/feature/AmazingFeature
    ```
 4. **Commit** your changes:
    ```bash
@@ -414,7 +442,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
    ```
 5. **Push** to the branch:
    ```bash
-   git push origin feature/AmazingFeature
+   git push origin blackboxai/feature/AmazingFeature
    ```
 6. **Open** a Pull Request
 
@@ -422,14 +450,16 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
+
+See the [LICENSE](LICENSE) file for details.
 
 ---
 
 ## 🙏 Acknowledgments
 
 - [Pillow (PIL)](https://python-pillow.org/) - Python Imaging Library
-- [rembg](https://github.com/danielgatis/rembg) - AI background removal
+- [rembg](https://github.com/danielgatis/rembg) - AI background removal library
 - [U2Net](https://github.com/xuanbinh-nguyen27/U2Net) - Deep learning model for salient object detection
 - [NumPy](https://numpy.org/) - Numerical computing library
 - [Matplotlib](https://matplotlib.org/) - Plotting library for histograms
@@ -438,6 +468,12 @@ This project is licensed under the MIT License.
 
 **Made with ❤️ by [Nitesh Kumar Lodh](https://github.com/niteshkumar8848)**
 
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/niteshkumar-lodh)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/niteshkumar-lodh)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/niteshkumar8848)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/niteshkumarlodh)
+
+---
+
+<p align="center">
+  <img src="https://komarev.com/ghpvc/?username=niteshkumar8848&repo=Photo-Editing-Using-Python&label=Profile%20views&color=0e75b6&style=flat" alt="Profile views" />
+</p>
 

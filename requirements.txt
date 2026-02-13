@@ -1,0 +1,17 @@
+# CLI Photo Editing Tool - Requirements
+# ======================================
+
+# Core Image Processing
+Pillow>=10.0.0
+
+# HTTP Requests (for downloading AI model)
+requests>=2.28.0
+
+# Background Removal AI
+rembg>=2.0.0
+"rembg[cpu]"
+# Numerical Computing (for histogram calculations)
+numpy>=1.24.0
+
+# Plotting Library (for image preview and histogram visualization)
+matplotlib>=3.7.0

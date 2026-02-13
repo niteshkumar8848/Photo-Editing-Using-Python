@@ -11,5 +11,5 @@ models/
 *.pth
 *.pt
 
-# Edited images
-2.EditedImage/
+# # Edited images
+# 2.EditedImage/
